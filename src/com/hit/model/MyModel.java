@@ -20,41 +20,7 @@ public class MyModel {
     public Scanner reader;
     public Socket toServer;
     public int port;
-//
-//    public static void main(String[] args) {
-//        MyModel model = new MyModel(3000);
-//
-//
-////        List<String> req = new ArrayList<>();
-////        req.add("GTA");
-////        req.add("GameName");
-////        req.add("HEN_GAMEEEEEEE");
-////
-////        model.updateGame(req);
-//
-//
-////
-////        List<String> req = new ArrayList<>();
-////        req.add("HADAS");
-////        req.add("Roleplay");
-////        req.add("Rockstar");
-////        req.add("PlayHard");
-////        req.add("north97");
-//
-//
-//        //model.saveGame(req);
-//
-////        model.deleteGame("HADAS");
-////
-////        List<Game> games = null;
-////        games = model.getGame("HADAS");
-//
-//        //save works
-//        //get works
-//        //update doesnt works
-//        //delete works
-//    }
-//
+
 
     public MyModel(int port){
         gson = new GsonBuilder().create();
@@ -89,7 +55,7 @@ public class MyModel {
         Map<String, String> headers = new HashMap<>();
 
         headers.put("command",command);
-        headers.put("GameName",input.get(0));
+        headers.put("Name",input.get(0));
         headers.put("toUpdate",input.get(1));
         headers.put("Val",input.get(2));
 

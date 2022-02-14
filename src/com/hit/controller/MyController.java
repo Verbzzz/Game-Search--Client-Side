@@ -32,15 +32,16 @@ public class MyController implements ActionListener {
 
         JFrame frame = this.view;
 
+        //save game
         if (e.getSource() == view.saveGameButton) {
 
             List<String> input = new ArrayList<>();
 
-            String name = view.nameGameAdmin.getText();
-            String genre = view.genreGameAdmin.getText();
-            String companyDevelop = view.gameCompanyDevelopAdmin.getText();
-            String storeName = view.gameStoreNameAdmin.getText();
-            String address = view.addressStoreAdmin.getText();
+            String name = view.nameGameAdmin.getText().replaceAll(" ","");
+            String genre = view.genreGameAdmin.getText().replaceAll(" ","");
+            String companyDevelop = view.gameCompanyDevelopAdmin.getText().replaceAll(" ","");
+            String storeName = view.gameStoreNameAdmin.getText().replaceAll(" ","");
+            String address = view.addressStoreAdmin.getText().replaceAll(" ","");
             input.add(name);
             input.add(genre);
             input.add(companyDevelop);
@@ -49,7 +50,7 @@ public class MyController implements ActionListener {
 
             String response = model.saveGame(input);
 
-            if (response.equals("Game saved")) {
+            if (response.equals("1")) {
                 JOptionPane.showMessageDialog(frame, name + " Game was saved successfully");
 
             } else {
@@ -57,87 +58,70 @@ public class MyController implements ActionListener {
 
             }
             clearAdminGameDetails();
-        } else {
-            clearAdminGameDetails();
-            JOptionPane.showMessageDialog(frame, "Fields cannot be empty or contain whitespaces.");
         }
 
+        //delete game
         if (e.getSource() == view.deleteGameButton) {
 
-            String gameNameDelete = view.gameNameDeleteAdmin.getText();
+            String gameNameDelete = view.gameNameDeleteAdmin.getText().replaceAll(" ","");
 
-            if (legalString(gameNameDelete)) {
+            String response = model.deleteGame(gameNameDelete);
 
-                String response = model.deleteGame(gameNameDelete);
+            if (response.equals("1")) {
+                JOptionPane.showMessageDialog(frame, gameNameDelete + " Game was deleted successfully");
 
-                if (response.equals("Game deleted")) {
-                    JOptionPane.showMessageDialog(frame, gameNameDelete + " Game was deleted successfully");
-
-                } else {
-                    JOptionPane.showMessageDialog(frame, "No such game: " + gameNameDelete);
-
-                }
-                clearAdminGameDetails();
             } else {
-                clearAdminGameDetails();
-                JOptionPane.showMessageDialog(frame, "Fields cannot be empty or contain whitespaces.");
+                JOptionPane.showMessageDialog(frame, "No such game: " + gameNameDelete);
             }
-
+            clearAdminGameDetails();
         }
 
+        //update game
         if (e.getSource() == view.updateGameButton) {
 
-            String gameName = view.nameUpdateAdmin.getText();
-            String category = view.categoryToUpdateAdmin.getText();
-            String val = view.valToUpdateAdmin.getText();
+            String gameName = view.nameUpdateAdmin.getText().replaceAll(" ","");
+            String category = view.categoryToUpdateAdmin.getText().replaceAll(" ","");
+            String val = view.valToUpdateAdmin.getText().replaceAll(" ","");
 
-            if (legalString(gameName)) {
+            List<String> input = new ArrayList<>();
+            input.add(gameName);
+            input.add(category);
+            input.add(val);
 
-                List<String> input = new ArrayList<>();
-                input.add(gameName);
-                input.add(category);
-                input.add(val);
+            String response = model.updateGame(input);
 
-                String response = model.updateGame(input);
+            if (response.equals("1")) {
+                JOptionPane.showMessageDialog(frame, "The" + category + " of the game has updated successfully");
 
-                if (response.equals("Game updated")) {
-                    JOptionPane.showMessageDialog(frame, "The" + category + " of the game has updated successfully");
-
-                } else {
-                    JOptionPane.showMessageDialog(frame, "No such game: " + gameName);
-
-                }
-                clearAdminGameDetails();
             } else {
-                clearAdminGameDetails();
-                JOptionPane.showMessageDialog(frame, "Fields cannot be empty or contain whitespaces.");
-            }
+                JOptionPane.showMessageDialog(frame, "No such game: " + gameName);
 
+            }
+            clearAdminGameDetails();
         }
 
+        //get game
         if (e.getSource() == view.getGameButton) {
 
-            String searchRestName = view.getGameUser.getText();
+            String search = view.getGameUser.getText().replaceAll(" ","");
 
             List <Game> games = null;
-            games = model.getGame(searchRestName);
+            games = model.getGame(search);
 
             if (games == null)
             {
                 clearTable();
                 clearUserGameDetails();
-                JOptionPane.showMessageDialog(frame, "We have some error with server, please try again");
+                JOptionPane.showMessageDialog(frame, "Please try again");
             }
+
             else
             {
                 setNewTable(games);
                 clearUserGameDetails();
             }
-
         }
     }
-
-
 
 
     public void setNewTable(List<Game> games)
@@ -173,7 +157,6 @@ public class MyController implements ActionListener {
 
     }
 
-
     public void clearAdminGameDetails()
     {
         view.nameGameAdmin.setText("");
@@ -189,22 +172,4 @@ public class MyController implements ActionListener {
     {
         view.getGameUser.setText("");
     }
-
-    public boolean legalStrings (List < String > details)
-    {
-        for (String s : details) {
-            if (s.equals("") || s.contains(" ")) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public boolean legalString(String details)
-    {
-        return !details.equals("") && !details.contains(" ");
-    }
-
-
 }
