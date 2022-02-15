@@ -2,12 +2,14 @@ package com.hit.view;
 
 
 import com.hit.view.background.ImagePanel;
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
+import java.awt.event.ItemListener;
 import java.util.Arrays;
 
 
@@ -54,7 +56,7 @@ public class View extends JFrame{
     public JTextArea deleteGameText = new JTextArea("Delete Game");
 
     //delete game
-    public JTextArea gameToDeleteText = new JTextArea("Game name to delete");
+    public JTextArea gameToDeleteText = new JTextArea("Game name to delete:");
     public JTextField gameNameDeleteAdmin = new JTextField();
 
     //save game
@@ -80,16 +82,19 @@ public class View extends JFrame{
     public JTextField categoryToUpdateAdmin = new JTextField();
     public JTextField valToUpdateAdmin = new JTextField();
 
-    static JComboBox comboBox;
+
+    String enumKeys [] = new String[] {
+            "GameName",
+            "Genre",
+            "GameCompanyDevelop",
+            "GameStoreName",
+            "AddressStore"};
+
+    public JComboBox <String> comboBox = new JComboBox(enumKeys);
 
 
-    public JToolBar tb = new JToolBar();
-
-
-
-
-    public JButton saveGameButton = new JButton("Save");
-    public JButton updateGameButton = new JButton("Update");
+    public JButton saveGameButton = new JButton("Save Game");
+    public JButton updateGameButton = new JButton("Update Game");
     public JButton deleteGameButton = new JButton("Delete Game");
 
 
@@ -119,7 +124,17 @@ public class View extends JFrame{
     //Background frames
 
 
-    ImagePanel homeScreenBack = new ImagePanel(new ImageIcon("src/com/hit/view/background/home screen.jpg").getImage());
+    ImagePanel homeScreenBack = new ImagePanel(new ImageIcon("src/com/hit/view/background/Packman.jpg").getImage());
+    ImagePanel adminAuthorBack = new ImagePanel(new ImageIcon("src/com/hit/view/background/Purple.jpg").getImage());
+    ImagePanel adminBack = new ImagePanel(new ImageIcon("src/com/hit/view/background/ghosts.jpg").getImage());
+    ImagePanel adminSaveBack = new ImagePanel(new ImageIcon("src/com/hit/view/background/Purple.jpg").getImage());
+    ImagePanel adminDeleteBack = new ImagePanel(new ImageIcon("src/com/hit/view/background/Green.jpg").getImage());
+    ImagePanel adminUpdateBack = new ImagePanel(new ImageIcon("src/com/hit/view/background/Red.jpg").getImage());
+    ImagePanel userBack = new ImagePanel(new ImageIcon("src/com/hit/view/background/user.jpg").getImage());
+
+
+
+
 
 
     public View(){
@@ -172,7 +187,7 @@ public class View extends JFrame{
             userPanel.setVisible(true);
         });
         userButton.setFont(new Font("Roboto Slab", Font.ITALIC | Font.BOLD, 20));
-        userButton.setBounds(600, 290, 165, 60);
+        userButton.setBounds(620, 320, 165, 60);
         userButton.setBackground(red);
         userButton.setBorder(border);
         userButton.setFocusPainted(false);
@@ -184,7 +199,7 @@ public class View extends JFrame{
         });
         adminButton.setFont(new Font("Roboto Slab", Font.ITALIC | Font.BOLD, 20));
         adminButton.setBackground(red);
-        adminButton.setBounds(300, 290, 165, 60);
+        adminButton.setBounds(620, 240, 165, 60);
         adminButton.setBorder(border);
         adminButton.setFocusPainted(false);
 
@@ -200,7 +215,7 @@ public class View extends JFrame{
 
         loginText.setFont(textFont);
         loginText.setForeground(blackColor);
-        loginText.setBounds(50, 40, 350, 50);
+        loginText.setBounds(135, 40, 350, 50);
         loginText.setOpaque(false);
         loginText.setEditable(false);
 
@@ -241,6 +256,7 @@ public class View extends JFrame{
         adminAuthorization.add(adminPassword);
         adminAuthorization.add(submitPasswordButton);
         adminAuthorization.add(exitFromAdminAuthorizationButton);
+        adminAuthorization.add(adminAuthorBack);
 
 
 
@@ -287,7 +303,7 @@ public class View extends JFrame{
         exitFromUpdateAdminButton.addActionListener(e->{
 
             nameUpdateAdmin.setText("");
-            categoryToUpdateAdmin.setText("");
+            categoryToUpdateAdmin.setText("GameName");
             valToUpdateAdmin.setText("");
             adminPanel.setVisible(true);
             adminGameSavePanel.setVisible(false);
@@ -405,6 +421,7 @@ public class View extends JFrame{
         adminGameSavePanel.add(addressStoreAdmin);
         adminGameSavePanel.add(saveGameButton);
         adminGameSavePanel.add(exitFromSaveAdminButton);
+        adminGameSavePanel.add(adminSaveBack);
 
 
 
@@ -412,14 +429,14 @@ public class View extends JFrame{
 
         gameToDeleteText.setFont(textFont);
         gameToDeleteText.setForeground(blackColor);
-        gameToDeleteText.setBounds(380, 100, 150, 30);
+        gameToDeleteText.setBounds(0, 150, 150, 30);
         gameToDeleteText.setOpaque(false);
         gameToDeleteText.setEditable(false);
 
-        gameNameDeleteAdmin.setBounds(380,150,180,25);
+        gameNameDeleteAdmin.setBounds(180,150,180,25);
         gameNameDeleteAdmin.setBorder(border);
 
-        deleteGameButton.setBounds(380,200,200,50);
+        deleteGameButton.setBounds(180,200,200,50);
         deleteGameButton.setBackground(red);
         deleteGameButton.setBorder(border);
         deleteGameButton.setFocusPainted(false);
@@ -431,6 +448,7 @@ public class View extends JFrame{
         adminGameDeletePanel.add(gameNameDeleteAdmin);
         adminGameDeletePanel.add(deleteGameButton);
         adminGameDeletePanel.add(exitFromDeleteAdminButton);
+        adminGameDeletePanel.add(adminDeleteBack);
 
 
 
@@ -445,6 +463,7 @@ public class View extends JFrame{
         nameUpdateAdmin.setBounds(140,90,180,25);
         nameUpdateAdmin.setBorder(border);
 
+        categoryToUpdateAdmin.setText("GameName");
         categoryToUpdateText.setFont(textFont);
         categoryToUpdateText.setForeground(blackColor);
         categoryToUpdateText.setBounds(0, 120, 150, 30);
@@ -453,6 +472,7 @@ public class View extends JFrame{
 
         categoryToUpdateAdmin.setBounds(140,120,180,25);
         categoryToUpdateAdmin.setBorder(border);
+        categoryToUpdateAdmin.setVisible(false);
 
         valToUpdateText.setFont(textFont);
         valToUpdateText.setForeground(blackColor);
@@ -469,13 +489,9 @@ public class View extends JFrame{
         updateGameButton.setFocusPainted(false);
         updateGameButton.setFont(buttonsFont);
 
-//        comboBox = new JComboBox(new String[] {
-//                "GameName",
-//                "Genre",
-//                "GameCompanyDevelop",
-//                "GameStoreName",
-//                "AddressStore"});
-//
+
+        comboBox.setBounds(140, 120,150,20);
+
 
 
         //update admin
@@ -487,6 +503,8 @@ public class View extends JFrame{
         adminGameUpdatePanel.add(valToUpdateAdmin);
         adminGameUpdatePanel.add(updateGameButton);
         adminGameUpdatePanel.add(exitFromUpdateAdminButton);
+        adminGameUpdatePanel.add(comboBox);
+        adminGameUpdatePanel.add(adminUpdateBack);
 
 
 
@@ -527,6 +545,7 @@ public class View extends JFrame{
         deleteButton.setFocusPainted(false);
         deleteButton.setFont(buttonsFont);
 
+
         deleteButton.addActionListener(e->{
             adminPanel.setVisible(false);
             adminGameSavePanel.setVisible(false);
@@ -539,6 +558,8 @@ public class View extends JFrame{
         adminPanel.add(updateButton);
         adminPanel.add(deleteButton);
         adminPanel.add(exitFromAdminButton);
+        adminPanel.add(adminBack);
+
 
 
 
@@ -552,7 +573,7 @@ public class View extends JFrame{
 
         getGameText.setFont(textFont);
         getGameText.setForeground(blackColor);
-        getGameText.setBounds(65, 20, 400, 50);
+        getGameText.setBounds(110, 20, 400, 50);
         getGameText.setOpaque(false);
         getGameText.setEditable(false);
 
@@ -590,6 +611,7 @@ public class View extends JFrame{
         userPanel.add(getGameButton);
         userPanel.add(gameTable);
         userPanel.add(exitFromUserButton);
+        userPanel.add(userBack);
 
 
         //userPanel.add(UserBack);

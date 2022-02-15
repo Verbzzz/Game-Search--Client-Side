@@ -18,6 +18,7 @@ public class MyController implements ActionListener {
     View view;
     MyModel model;
 
+
     public MyController(View view, MyModel model) {
         this.view = view;
         this.model = model;
@@ -26,7 +27,10 @@ public class MyController implements ActionListener {
         this.view.updateGameButton.addActionListener(this);
         this.view.deleteGameButton.addActionListener(this);
         this.view.getGameButton.addActionListener(this);
+        this.view.comboBox.addActionListener(this);
     }
+
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -80,7 +84,22 @@ public class MyController implements ActionListener {
             clearAdminGameDetails();
         }
 
-        //update game
+
+        if(e.getSource() == view.comboBox){
+            view.categoryToUpdateAdmin.setText((String) view.comboBox.getSelectedItem());
+
+            List<String> enumKeys = new ArrayList<>();
+            enumKeys.add("GameName");
+            enumKeys.add("Genre");
+            enumKeys.add("GameCompanyDevelop");
+            enumKeys.add("GameStoreName");
+            enumKeys.add("AddressStore");
+
+            if(!(enumKeys.contains((String) view.comboBox.getSelectedItem()))){
+                JOptionPane.showMessageDialog(frame, "Illegal category, please try again");
+            }
+        }
+
         if (e.getSource() == view.updateGameButton) {
 
             String gameName = view.nameUpdateAdmin.getText().replaceAll(" ","");
@@ -96,7 +115,7 @@ public class MyController implements ActionListener {
                 String response = model.updateGame(input);
 
                 if (response.equals("1")) {
-                    JOptionPane.showMessageDialog(frame, "The" + category + " of the game has updated successfully");
+                    JOptionPane.showMessageDialog(frame, "The " + category + " of the game has updated successfully");
 
                 } else {
                     JOptionPane.showMessageDialog(frame, "Please try again");
@@ -107,6 +126,7 @@ public class MyController implements ActionListener {
             }
             clearAdminGameDetails();
         }
+
 
         //get game
         if (e.getSource() == view.getGameButton) {
@@ -131,6 +151,7 @@ public class MyController implements ActionListener {
             }
         }
     }
+
 
     public void setNewTable(List<Game> games)
     {
@@ -162,8 +183,8 @@ public class MyController implements ActionListener {
         view.gamePanel[0] = new JScrollPane(view.gameTable);
         view.gamePanel[0].setBounds(100, 400, 700, 130);
         view.userPanel.add(view.gamePanel[0]);
-
     }
+
 
     public void clearAdminGameDetails()
     {
