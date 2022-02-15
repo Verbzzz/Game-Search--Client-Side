@@ -1,9 +1,13 @@
 package com.hit.view;
 
+
+import com.hit.view.background.ImagePanel;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+
 import java.util.Arrays;
 
 
@@ -76,6 +80,11 @@ public class View extends JFrame{
     public JTextField categoryToUpdateAdmin = new JTextField();
     public JTextField valToUpdateAdmin = new JTextField();
 
+    static JComboBox comboBox;
+
+
+    public JToolBar tb = new JToolBar();
+
 
 
 
@@ -107,12 +116,18 @@ public class View extends JFrame{
     public JTable gameTable = new JTable(dtm[0]);
     public final JScrollPane[] gamePanel;
 
+    //Background frames
+
+
+    ImagePanel homeScreenBack = new ImagePanel(new ImageIcon("src/com/hit/view/background/home screen.jpg").getImage());
+
 
     public View(){
 
-        /// main windows
+        //------------------------------------HomeScreen---------------------------------------------//
+        // ------------------------------------------------------------------------------------------//
 
-        setResizable(false); // else all the styling goes away..
+        setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(900,600); // app size.
         this.getContentPane().setLayout(new CardLayout(0,0));
@@ -143,16 +158,22 @@ public class View extends JFrame{
         userPanel.setLayout(null);
 
 
-        Color Salmon = new Color(225, 102, 102);
+        Color red = new Color(225, 51, 51);
+        Color blackColor = new Color(0, 0, 0);
+
+        Font buttonsFont = new Font("Roboto Slab", Font.ITALIC | Font.BOLD, 15);
+        Font textFont = new Font("Roboto Slab", Font.ITALIC | Font.BOLD, 15);
+
+
         Border border = BorderFactory.createLineBorder(Color.black);
 
         userButton.addActionListener(e -> {
             homeScreenPanel.setVisible(false);
             userPanel.setVisible(true);
         });
-        userButton.setFont(new Font("Default", Font.ITALIC, 20 ));
+        userButton.setFont(new Font("Roboto Slab", Font.ITALIC | Font.BOLD, 20));
         userButton.setBounds(600, 290, 165, 60);
-        userButton.setBackground(Salmon);
+        userButton.setBackground(red);
         userButton.setBorder(border);
         userButton.setFocusPainted(false);
 
@@ -161,25 +182,24 @@ public class View extends JFrame{
             homeScreenPanel.setVisible(false);
             adminAuthorization.setVisible(true);
         });
-        adminButton.setFont(new Font("Default", Font.ITALIC, 20 ));
-        adminButton.setBackground(Salmon);
+        adminButton.setFont(new Font("Roboto Slab", Font.ITALIC | Font.BOLD, 20));
+        adminButton.setBackground(red);
         adminButton.setBounds(300, 290, 165, 60);
         adminButton.setBorder(border);
         adminButton.setFocusPainted(false);
 
         homeScreenPanel.add(userButton);
         homeScreenPanel.add(adminButton);
-        //homeScreenPanel.add(HomeScreenBack);
+        homeScreenPanel.add(homeScreenBack);
 
         //------------------------------------Admin  Authorization side---------------------------------------------//
         // ------------------------------------------------------------------------------------------//
 
-        Color pink = new Color(225, 153, 153);
         adminPassword.setBounds(80,90,250,25);
         adminPassword.setBorder(border);
 
-        loginText.setFont(new Font("Default", Font.ITALIC, 20 ));
-        loginText.setForeground(pink);
+        loginText.setFont(textFont);
+        loginText.setForeground(blackColor);
         loginText.setBounds(50, 40, 350, 50);
         loginText.setOpaque(false);
         loginText.setEditable(false);
@@ -200,9 +220,10 @@ public class View extends JFrame{
 
         });
         submitPasswordButton.setBounds(135,140,150,30);
-        submitPasswordButton.setBackground(pink);
+        submitPasswordButton.setBackground(red);
         submitPasswordButton.setBorder(border);
         submitPasswordButton.setFocusPainted(false);
+        submitPasswordButton.setFont(buttonsFont);
 
 
         exitFromAdminAuthorizationButton.addActionListener(e->{
@@ -213,7 +234,7 @@ public class View extends JFrame{
         });
 
         exitFromAdminAuthorizationButton.setBounds(834,0,50,20);
-        exitFromAdminAuthorizationButton.setBackground(pink);
+        exitFromAdminAuthorizationButton.setBackground(red);
         exitFromAdminAuthorizationButton.setBorder(border);
 
         adminAuthorization.add(loginText);
@@ -226,10 +247,10 @@ public class View extends JFrame{
         //------------------------------------Admin side---------------------------------------------//
         // ------------------------------------------------------------------------------------------//
 
-        Color blackColor = new Color(0, 0, 0);
+
 
         exitFromAdminButton.setBounds(834,0,50,20);
-        exitFromAdminButton.setBackground(pink);
+        exitFromAdminButton.setBackground(red);
         exitFromAdminButton.setBorder(border);
 
         exitFromAdminButton.addActionListener(e->{
@@ -242,7 +263,7 @@ public class View extends JFrame{
 
 
         exitFromSaveAdminButton.setBounds(834,0,50,20);
-        exitFromSaveAdminButton.setBackground(pink);
+        exitFromSaveAdminButton.setBackground(red);
         exitFromSaveAdminButton.setBorder(border);
 
         exitFromSaveAdminButton.addActionListener(e->{
@@ -260,7 +281,7 @@ public class View extends JFrame{
         });
 
         exitFromUpdateAdminButton.setBounds(834,0,50,20);
-        exitFromUpdateAdminButton.setBackground(pink);
+        exitFromUpdateAdminButton.setBackground(red);
         exitFromUpdateAdminButton.setBorder(border);
 
         exitFromUpdateAdminButton.addActionListener(e->{
@@ -276,7 +297,7 @@ public class View extends JFrame{
         });
 
         exitFromDeleteAdminButton.setBounds(834,0,50,20);
-        exitFromDeleteAdminButton.setBackground(pink);
+        exitFromDeleteAdminButton.setBackground(red);
         exitFromDeleteAdminButton.setBorder(border);
 
         exitFromDeleteAdminButton.addActionListener(e->{
@@ -290,26 +311,26 @@ public class View extends JFrame{
         });
 
 
-        addGameText.setFont(new Font("Default", Font.ITALIC, 25 ));
-        addGameText.setForeground(pink);
+        addGameText.setFont(textFont);
+        addGameText.setForeground(red);
         addGameText.setBounds(50, 20, 400, 50);
         addGameText.setOpaque(false);
         addGameText.setEditable(false);
 
-        updateGameText.setFont(new Font("Default", Font.ITALIC, 25 ));
-        updateGameText.setForeground(pink);
+        updateGameText.setFont(textFont);
+        updateGameText.setForeground(red);
         updateGameText.setBounds(50, 20, 400, 50);
         updateGameText.setOpaque(false);
         updateGameText.setEditable(false);
 
-        saveGameText.setFont(new Font("Default", Font.ITALIC, 25 ));
-        saveGameText.setForeground(pink);
+        saveGameText.setFont(textFont);
+        saveGameText.setForeground(red);
         saveGameText.setBounds(50, 20, 400, 50);
         saveGameText.setOpaque(false);
         saveGameText.setEditable(false);
 
-        deleteGameText.setFont(new Font("Default", Font.ITALIC, 25 ));
-        deleteGameText.setForeground(pink);
+        deleteGameText.setFont(textFont);
+        deleteGameText.setForeground(red);
         deleteGameText.setBounds(50, 20, 400, 50);
         deleteGameText.setOpaque(false);
         deleteGameText.setEditable(false);
@@ -319,7 +340,7 @@ public class View extends JFrame{
 
 
         //save panel
-        nameText.setFont(new Font("Default", Font.ITALIC, 15 ));
+        nameText.setFont(textFont);
         nameText.setForeground(blackColor);
         nameText.setBounds(0, 90, 150, 30);
         nameText.setOpaque(false);
@@ -329,7 +350,7 @@ public class View extends JFrame{
         nameGameAdmin.setBorder(border);
 
 
-        genreText.setFont(new Font("Default", Font.ITALIC, 15 ));
+        genreText.setFont(textFont);
         genreText.setForeground(blackColor);
         genreText.setBounds(0, 120, 150, 30);
         genreText.setOpaque(false);
@@ -338,7 +359,7 @@ public class View extends JFrame{
         genreGameAdmin.setBounds(160,120,150,25);
         genreGameAdmin.setBorder(border);
 
-        gameCompanyDevelopText.setFont(new Font("Default", Font.ITALIC, 15 ));
+        gameCompanyDevelopText.setFont(textFont);
         gameCompanyDevelopText.setForeground(blackColor);
         gameCompanyDevelopText.setBounds(0, 150, 150, 30);
         gameCompanyDevelopText.setOpaque(false);
@@ -347,7 +368,7 @@ public class View extends JFrame{
         gameCompanyDevelopAdmin.setBounds(160,150,150,25);
         gameCompanyDevelopAdmin.setBorder(border);
 
-        gameStoreNameText.setFont(new Font("Default", Font.ITALIC, 15 ));
+        gameStoreNameText.setFont(textFont);
         gameStoreNameText.setForeground(blackColor);
         gameStoreNameText.setBounds(0, 180, 150, 30);
         gameStoreNameText.setOpaque(false);
@@ -356,7 +377,7 @@ public class View extends JFrame{
         gameStoreNameAdmin.setBounds(160,180,150,25);
         gameStoreNameAdmin.setBorder(border);
 
-        addressStoreText.setFont(new Font("Default", Font.ITALIC, 15 ));
+        addressStoreText.setFont(textFont);
         addressStoreText.setForeground(blackColor);
         addressStoreText.setBounds(0, 210, 150, 30);
         addressStoreText.setOpaque(false);
@@ -366,9 +387,10 @@ public class View extends JFrame{
         addressStoreAdmin.setBorder(border);
 
         saveGameButton.setBounds(160,260,200,50);
-        saveGameButton.setBackground(pink);
+        saveGameButton.setBackground(red);
         saveGameButton.setBorder(border);
         saveGameButton.setFocusPainted(false);
+        saveGameButton.setFont(buttonsFont);
 
         //save admin
         adminGameSavePanel.add(nameText);
@@ -388,7 +410,7 @@ public class View extends JFrame{
 
         //delete panel
 
-        gameToDeleteText.setFont(new Font("Default", Font.ITALIC, 15 ));
+        gameToDeleteText.setFont(textFont);
         gameToDeleteText.setForeground(blackColor);
         gameToDeleteText.setBounds(380, 100, 150, 30);
         gameToDeleteText.setOpaque(false);
@@ -398,9 +420,10 @@ public class View extends JFrame{
         gameNameDeleteAdmin.setBorder(border);
 
         deleteGameButton.setBounds(380,200,200,50);
-        deleteGameButton.setBackground(pink);
+        deleteGameButton.setBackground(red);
         deleteGameButton.setBorder(border);
         deleteGameButton.setFocusPainted(false);
+        deleteGameButton.setFont(buttonsFont);
 
 
         //delete admin
@@ -413,7 +436,7 @@ public class View extends JFrame{
 
         //update panel
 
-        nameUpdateText.setFont(new Font("Default", Font.ITALIC, 15 ));
+        nameUpdateText.setFont(textFont);
         nameUpdateText.setForeground(blackColor);
         nameUpdateText.setBounds(0, 90, 150, 30);
         nameUpdateText.setOpaque(false);
@@ -422,7 +445,7 @@ public class View extends JFrame{
         nameUpdateAdmin.setBounds(140,90,180,25);
         nameUpdateAdmin.setBorder(border);
 
-        categoryToUpdateText.setFont(new Font("Default", Font.ITALIC, 15 ));
+        categoryToUpdateText.setFont(textFont);
         categoryToUpdateText.setForeground(blackColor);
         categoryToUpdateText.setBounds(0, 120, 150, 30);
         categoryToUpdateText.setOpaque(false);
@@ -431,7 +454,7 @@ public class View extends JFrame{
         categoryToUpdateAdmin.setBounds(140,120,180,25);
         categoryToUpdateAdmin.setBorder(border);
 
-        valToUpdateText.setFont(new Font("Default", Font.ITALIC, 15 ));
+        valToUpdateText.setFont(textFont);
         valToUpdateText.setForeground(blackColor);
         valToUpdateText.setBounds(0, 150, 150, 30);
         valToUpdateText.setOpaque(false);
@@ -441,9 +464,18 @@ public class View extends JFrame{
         valToUpdateAdmin.setBorder(border);
 
         updateGameButton.setBounds(140,200,200,50);
-        updateGameButton.setBackground(pink);
+        updateGameButton.setBackground(red);
         updateGameButton.setBorder(border);
         updateGameButton.setFocusPainted(false);
+        updateGameButton.setFont(buttonsFont);
+
+//        comboBox = new JComboBox(new String[] {
+//                "GameName",
+//                "Genre",
+//                "GameCompanyDevelop",
+//                "GameStoreName",
+//                "AddressStore"});
+//
 
 
         //update admin
@@ -462,9 +494,10 @@ public class View extends JFrame{
         //main admin
 
         saveButton.setBounds(600,155,200,50);
-        saveButton.setBackground(pink);
+        saveButton.setBackground(red);
         saveButton.setBorder(border);
         saveButton.setFocusPainted(false);
+        saveButton.setFont(buttonsFont);
 
         saveButton.addActionListener(e->{
             adminPanel.setVisible(false);
@@ -475,9 +508,10 @@ public class View extends JFrame{
         });
 
         updateButton.setBounds(350,155,200,50);
-        updateButton.setBackground(pink);
+        updateButton.setBackground(red);
         updateButton.setBorder(border);
         updateButton.setFocusPainted(false);
+        updateButton.setFont(buttonsFont);
 
         updateButton.addActionListener(e->{
             adminPanel.setVisible(false);
@@ -488,9 +522,10 @@ public class View extends JFrame{
         });
 
         deleteButton.setBounds(100,155,200,50);
-        deleteButton.setBackground(pink);
+        deleteButton.setBackground(red);
         deleteButton.setBorder(border);
         deleteButton.setFocusPainted(false);
+        deleteButton.setFont(buttonsFont);
 
         deleteButton.addActionListener(e->{
             adminPanel.setVisible(false);
@@ -515,8 +550,8 @@ public class View extends JFrame{
         //------------------------------------User Side-----------------------------------------//
         //---------------------------------------------------------------------------------------//
 
-        getGameText.setFont(new Font("Default", Font.ITALIC, 25 ));
-        getGameText.setForeground(pink);
+        getGameText.setFont(textFont);
+        getGameText.setForeground(blackColor);
         getGameText.setBounds(65, 20, 400, 50);
         getGameText.setOpaque(false);
         getGameText.setEditable(false);
@@ -526,9 +561,10 @@ public class View extends JFrame{
 
 
         getGameButton.setBounds(110,125,200,50);
-        getGameButton.setBackground(pink);
+        getGameButton.setBackground(red);
         getGameButton.setBorder(border);
         getGameButton.setFocusPainted(false);
+        getGameButton.setFont(buttonsFont);
 
         gameTable.getTableHeader().setReorderingAllowed(false);
         gameTable.setAutoCreateColumnsFromModel(false);
@@ -537,7 +573,7 @@ public class View extends JFrame{
 
 
         exitFromUserButton.setBounds(834,0,50,20);
-        exitFromUserButton.setBackground(pink);
+        exitFromUserButton.setBackground(red);
         exitFromUserButton.setBorder(border);
 
         exitFromUserButton.addActionListener(e->{

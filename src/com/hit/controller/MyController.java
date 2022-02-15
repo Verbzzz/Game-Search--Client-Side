@@ -10,12 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MyController implements ActionListener {
 
     View view;
     MyModel model;
-
 
     public MyController(View view, MyModel model) {
         this.view = view;
@@ -48,16 +49,19 @@ public class MyController implements ActionListener {
             input.add(storeName);
             input.add(address);
 
-            String response = model.saveGame(input);
+            if(!(specialCharList(input))){
+                String response = model.saveGame(input);
+                if (response.equals("1")) {
+                    JOptionPane.showMessageDialog(frame, name + " Game was saved successfully");
 
-            if (response.equals("1")) {
-                JOptionPane.showMessageDialog(frame, name + " Game was saved successfully");
-
-            } else {
-                JOptionPane.showMessageDialog(frame, "ERROR");
-
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Please try again");
+                }
+                clearAdminGameDetails();
             }
-            clearAdminGameDetails();
+            else{
+                JOptionPane.showMessageDialog(frame, "You can't save a game with special character, try again");
+            }
         }
 
         //delete game
@@ -88,14 +92,18 @@ public class MyController implements ActionListener {
             input.add(category);
             input.add(val);
 
-            String response = model.updateGame(input);
+            if(!(specialCharList(input))){
+                String response = model.updateGame(input);
 
-            if (response.equals("1")) {
-                JOptionPane.showMessageDialog(frame, "The" + category + " of the game has updated successfully");
+                if (response.equals("1")) {
+                    JOptionPane.showMessageDialog(frame, "The" + category + " of the game has updated successfully");
 
-            } else {
-                JOptionPane.showMessageDialog(frame, "No such game: " + gameName);
-
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Please try again");
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(frame, "You can't update a game with special character, try again");
             }
             clearAdminGameDetails();
         }
@@ -105,24 +113,24 @@ public class MyController implements ActionListener {
 
             String search = view.getGameUser.getText().replaceAll(" ","");
 
-            List <Game> games = null;
-            games = model.getGame(search);
+            if(!specialChar(search)){
+                List <Game> games = null;
+                games = model.getGame(search);
 
-            if (games == null)
-            {
-                clearTable();
-                clearUserGameDetails();
-                JOptionPane.showMessageDialog(frame, "Please try again");
-            }
-
-            else
-            {
-                setNewTable(games);
-                clearUserGameDetails();
+                if (games.isEmpty())
+                {
+                    clearTable();
+                    clearUserGameDetails();
+                    JOptionPane.showMessageDialog(frame, "No games matches the search");
+                }
+                else
+                {
+                    setNewTable(games);
+                    clearUserGameDetails();
+                }
             }
         }
     }
-
 
     public void setNewTable(List<Game> games)
     {
@@ -171,5 +179,26 @@ public class MyController implements ActionListener {
     public  void clearUserGameDetails()
     {
         view.getGameUser.setText("");
+    }
+
+    public boolean specialCharList(List<String> input){
+        Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+        for (String temp:input) {
+            Matcher matcher = pattern.matcher(temp);
+            boolean isStringContainsSpecialCharacter = matcher.find();
+            if (isStringContainsSpecialCharacter)
+                return true;
+        }
+        return false;
+    }
+
+    public boolean specialChar(String temp) {
+        Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+        Matcher matcher = pattern.matcher(temp);
+        boolean isStringContainsSpecialCharacter = matcher.find();
+        if (isStringContainsSpecialCharacter)
+            return true;
+        else
+            return false;
     }
 }
