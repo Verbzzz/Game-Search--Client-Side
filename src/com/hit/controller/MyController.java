@@ -13,10 +13,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class MyController implements ActionListener {
 
     View view;
     MyModel model;
+
 
 
     public MyController(View view, MyModel model) {
@@ -53,18 +55,23 @@ public class MyController implements ActionListener {
             input.add(storeName);
             input.add(address);
 
-            if(!(specialCharList(input))){
-                String response = model.saveGame(input);
-                if (response.equals("1")) {
-                    JOptionPane.showMessageDialog(frame, name + " Game was saved successfully");
-
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Please try again");
-                }
-                clearAdminGameDetails();
+            if(emptyElements(input)){
+                JOptionPane.showMessageDialog(frame, "All the fields need to be filled");
             }
             else{
-                JOptionPane.showMessageDialog(frame, "You can't save a game with special character, try again");
+                if(!(specialCharList(input))){
+                    String response = model.saveGame(input);
+                    if (response.equals("1")) {
+                        JOptionPane.showMessageDialog(frame, name + " Game was saved successfully");
+
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Please try again");
+                    }
+                    clearAdminGameDetails();
+                }
+                else{
+                    JOptionPane.showMessageDialog(frame, "You can't save a game with special character, try again");
+                }
             }
         }
 
@@ -72,16 +79,30 @@ public class MyController implements ActionListener {
         if (e.getSource() == view.deleteGameButton) {
 
             String gameNameDelete = view.gameNameDeleteAdmin.getText().replaceAll(" ","");
-
-            String response = model.deleteGame(gameNameDelete);
-
-            if (response.equals("1")) {
-                JOptionPane.showMessageDialog(frame, gameNameDelete + " Game was deleted successfully");
-
-            } else {
-                JOptionPane.showMessageDialog(frame, "No such game: " + gameNameDelete);
+            if(emptyElement(gameNameDelete)){
+                JOptionPane.showMessageDialog(frame, "All the fields need to be filled");
             }
-            clearAdminGameDetails();
+            else{
+                if((!specialChar(gameNameDelete))){
+                    if(isExistingGame(gameNameDelete)){
+                        String response = model.deleteGame(gameNameDelete);
+                        if (response.equals("1")) {
+                            JOptionPane.showMessageDialog(frame, gameNameDelete + " Game was deleted successfully");
+
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Please try again");
+                        }
+                        clearAdminGameDetails();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(frame, "This game is not existing");
+                    }
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(frame, "You can't delete a game with special character, try again");
+                }
+            }
         }
 
 
@@ -110,21 +131,30 @@ public class MyController implements ActionListener {
             input.add(gameName);
             input.add(category);
             input.add(val);
-
-            if(!(specialCharList(input))){
-                String response = model.updateGame(input);
-
-                if (response.equals("1")) {
-                    JOptionPane.showMessageDialog(frame, "The " + category + " of the game has updated successfully");
-
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Please try again");
-                }
+            if(emptyElements(input)){
+                JOptionPane.showMessageDialog(frame, "All the fields need to be filled");
             }
             else{
-                JOptionPane.showMessageDialog(frame, "You can't update a game with special character, try again");
+                if(!(specialCharList(input))){
+                    String response = model.updateGame(input);
+                    if(isExistingGame(gameName)){
+                        if (response.equals("1")) {
+                            JOptionPane.showMessageDialog(frame, "The " + category + " of the game has updated successfully");
+
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Please try again");
+                        }
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(frame, "This game is not existing");
+                    }
+
+                    clearAdminGameDetails();
+                    }
+                     else{
+                    JOptionPane.showMessageDialog(frame, "You can't update a game with special character, try again");
+                }
             }
-            clearAdminGameDetails();
         }
 
 
@@ -133,22 +163,29 @@ public class MyController implements ActionListener {
 
             String search = view.getGameUser.getText().replaceAll(" ","");
 
-            if(!specialChar(search)){
-                List <Game> games = null;
-                games = model.getGame(search);
+            if(emptyElement(search)){
+                JOptionPane.showMessageDialog(frame, "All the fields need to be filled");
+            }
 
-                if (games.isEmpty())
-                {
-                    clearTable();
-                    clearUserGameDetails();
-                    JOptionPane.showMessageDialog(frame, "No games matches the search");
-                }
-                else
-                {
+            else{
+                if(!specialChar(search)){
+                    List <Game> games = null;
+                    games = model.getGame(search);
+                    if (games.isEmpty())
+                    {
+                        clearTable();
+                        clearUserGameDetails();
+                        JOptionPane.showMessageDialog(frame, "No games matches the search");
+                    }
                     setNewTable(games);
                     clearUserGameDetails();
                 }
+                else
+                {
+                    JOptionPane.showMessageDialog(frame, "You can't search a game with special character, try again");
+                }
             }
+            clearUserGameDetails();
         }
     }
 
@@ -202,6 +239,8 @@ public class MyController implements ActionListener {
         view.getGameUser.setText("");
     }
 
+
+    //Validation tests
     public boolean specialCharList(List<String> input){
         Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
         for (String temp:input) {
@@ -221,5 +260,29 @@ public class MyController implements ActionListener {
             return true;
         else
             return false;
+    }
+
+    public boolean emptyElements(List<String> input) {
+        if(input.contains(null) || input.contains("")) {
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean emptyElement(String input){
+        if((input.equals(null)) || (input.equals(""))){
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean isExistingGame(String search){
+        List <Game> games = null;
+        games = model.getGame(search);
+        if (games.isEmpty())
+        {
+            return false;
+        }
+        else return true;
     }
 }
