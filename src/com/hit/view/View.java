@@ -2,14 +2,10 @@ package com.hit.view;
 
 
 import com.hit.view.background.ImagePanel;
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-
-import java.awt.event.ItemListener;
 import java.util.Arrays;
 
 
@@ -26,7 +22,7 @@ public class View extends JFrame{
     public JPanel adminGameDeletePanel = new JPanel();
 
     public JPanel userPanel = new JPanel();
-   //public JPanel gameClientPanel = new JPanel();
+
 
 
 
@@ -614,14 +610,13 @@ public class View extends JFrame{
         userPanel.add(userBack);
 
 
-        //userPanel.add(UserBack);
         this.setVisible(true);
 
     }
 
     private static boolean isPasswordCorrect(char[] input) {
         boolean isCorrect;
-        char[] correctPassword = { '1', '2', '3', '4', '5' };
+        char[] correctPassword = { 'n', 'i', 's', 's', 'i', 'm' };
 
         if (input.length != correctPassword.length) {
             isCorrect = false;
